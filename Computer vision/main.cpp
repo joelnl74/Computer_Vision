@@ -3,11 +3,11 @@
 
 int main()
 {
-	cv::Mat image = cv::imread("jpg-vs-jpeg.jpg");
-	cv::FileStorage fs("path here", cv::FileStorage::READ);
-	cv::Mat intrinsics, distortion;
-	fs["camera_matrix"] >> intrinsics;
-	fs["distortion_coefficients"] >> distortion;
+	cv::Mat image = cv::imread("calib-checkerboard.png");
+	//cv::FileStorage fs("path here", cv::FileStorage::READ);
+	//cv::Mat intrinsics, distortion;
+	//fs["camera_matrix"] >> intrinsics;
+	//fs["distortion_coefficients"] >> distortion;
 
     if (image.empty())                      
     {
@@ -19,9 +19,8 @@ int main()
 		imshow("Display Window", image);
 	}
 	std::vector<cv::Point3f> boardPoints;
-	bool found = cv::findChessboardCorners(image, cv::Size(8, 9), boardPoints, cv::CALIB_CB_ADAPTIVE_THRESH);
 
-
+	//bool found = cv::findChessboardCorners(image, cv::Size(8, 9), boardPoints, cv::CALIB_CB_ADAPTIVE_THRESH);
 
 	cv::waitKey(0);
 
