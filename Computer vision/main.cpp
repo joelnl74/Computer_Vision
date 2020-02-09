@@ -1,7 +1,7 @@
 #include<opencv2/opencv.hpp>
 #include<iostream>
 
-int main()
+int Test()
 {
 	cv::Mat image = cv::imread("calib-checkerboard.png");
 	cv::Mat intrinsics, distortion;
@@ -10,6 +10,7 @@ int main()
 	// TODO Get the right camera data from calibration and read that in here.
 	if (fs.isOpened())
 	{
+		// Read in camera matrix and distortion from output calibrated camera.
 		fs["camera_matrix"] >> intrinsics;
 		fs["distortion_coefficients"] >> distortion;
 	}
@@ -25,6 +26,7 @@ int main()
 	}
 	std::vector<cv::Point3f> boardPoints;
 
+	// find chessboard corners.
 	//bool found = cv::findChessboardCorners(image, cv::Size(8, 9), boardPoints, cv::CALIB_CB_ADAPTIVE_THRESH);
 
 	cv::waitKey(0);
