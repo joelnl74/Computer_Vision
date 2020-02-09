@@ -4,10 +4,15 @@
 int main()
 {
 	cv::Mat image = cv::imread("calib-checkerboard.png");
-	//cv::FileStorage fs("path here", cv::FileStorage::READ);
-	//cv::Mat intrinsics, distortion;
-	//fs["camera_matrix"] >> intrinsics;
-	//fs["distortion_coefficients"] >> distortion;
+	cv::Mat intrinsics, distortion;
+	cv::FileStorage fs("out_camera_data.yml", cv::FileStorage::READ);
+
+	// TODO Get the right camera data from calibration and read that in here.
+	if (fs.isOpened())
+	{
+		fs["camera_matrix"] >> intrinsics;
+		fs["distortion_coefficients"] >> distortion;
+	}
 
     if (image.empty())                      
     {
