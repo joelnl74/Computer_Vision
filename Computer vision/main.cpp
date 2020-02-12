@@ -1,5 +1,6 @@
 #include<iostream>
 #include "OfflineOpenCV.h";
+#include <opencv2/calib3d/calib3d.hpp>
 // https://www.programcreek.com/python/example/89414/cv2.projectPoints
 // https://docs.opencv.org/3.4/d7/d53/tutorial_py_pose.html
 // https://docs.opencv.org/2.4/modules/calib3d/doc/camera_calibration_and_3d_reconstruction.html#decomposeprojectionmatrix
@@ -14,8 +15,9 @@ int main()
 	cv::Mat image = cv::imread("images/0.jpg");;
 
 	auto corner = calibration.GetFirstCorner();
-	std::vector<cv::Point3f> projectionPoints = calibration.ReturnProjecttionPoint();
-	calibration.ReturnProjecttionPoint();
+	calibration.DrawFrameAxes(image);
+	cv::rectangle(image, cv::Rect2i(corner.x, corner.y, 50, 50), cv::Scalar(255, 0, 0, 0), 4);
+	//calibration.ReturnProjecttionPoint();
 
 	//cv::line(image, corner, projectionPoints[0], cv::Scalar(255, 0, 0), 5);
 	//cv::line(image, corner, projectionPoints[1], cv::Scalar(0, 255, 0), 5);

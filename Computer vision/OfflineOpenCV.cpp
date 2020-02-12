@@ -54,7 +54,7 @@ void OfflineOpenCV::GetWorldSpaceCoords()
 
 void OfflineOpenCV::CalibrateCamera()
 {
-	GetChessBoardCorners("images/", 5);
+	GetChessBoardCorners("images/", 12);
 
 	// Needed to get the image size.
 	cv::Mat img = cv::imread("images/0.jpg");
@@ -68,19 +68,7 @@ cv::Point2f OfflineOpenCV::GetFirstCorner()
 	return m_objectPoints[0][0];
 }
 
-std::vector<cv::Point3f> OfflineOpenCV::ReturnProjecttionPoint()
+void OfflineOpenCV::DrawFrameAxes(cv::Mat image)
 {
-	std::vector<cv::Point3f> points;
-
-	try
-	{
-		cv::projectPoints(m_imagePoints[0], rvecs, tvecs, m_cameraMatrix, distcoefs, m_objectPoints[0], points);
-	}
-	catch (cv::Exception & e)
-	{
-		std::cout << e.err;
-	}
-
-
-	return points;
+	cv::drawFrameAxes(image, m_cameraMatrix, distcoefs, rvecs[0], tvecs[0], 1);
 }
