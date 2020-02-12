@@ -17,9 +17,9 @@ int main()
 	auto corner = calibration.GetFirstCorner();
 	auto projectedPoints = calibration.GetAxesPoints();
 
-	cv::line(image, corner, projectedPoints[0], (1, 0, 0), 2);
-	cv::line(image, corner, projectedPoints[1], (0, 1, 0), 2);
-	cv::line(image, corner, projectedPoints[2], (0, 0, 1), 2);
+	cv::line(image, corner, projectedPoints[0], cv::Scalar(255, 0, 0), 2);
+	cv::line(image, corner, -projectedPoints[1], cv::Scalar(0, 255, 0), 2);
+	cv::line(image, corner, projectedPoints[2], cv::Scalar(0, 0, 255), 2);
 
 	imshow("Display Window", image);
 

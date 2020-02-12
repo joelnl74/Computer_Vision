@@ -11,15 +11,20 @@ void OfflineOpenCV::GetChessBoardCorners(const std::string& imagePath, const int
 
 		// Read in images
 		cv::Mat img = cv::imread(path);
+		cv::Mat gray;
+		cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
 		std::vector<cv::Point2f> corners;
 
 		// Find chess board corners(each cell on the checkerboard).
-		bool succes = cv::findChessboardCorners(img, boardSize, corners);
+		bool succes = cv::findChessboardCorners(img, boardSize, corners, cv::CALIB_CB_ADAPTIVE_THRESH + cv::CALIB_CB_NORMALIZE_IMAGE + cv::CALIB_CB_FAST_CHECK);
 
 		if (succes)
 		{
+			cv::cornerSubPix(gray, corners, boardSize, cv::Size(-1, -1), 
+				cv::TermCriteria(cv::TermCriteria::EPS | cv::TermCriteria::MAX_ITER, 30, 0.1));
+
 			// Save the points found on the checkerboard.
-			m_objectPoints.push_back(corners);
+			m_imagePoints.push_back(corners);
 			GetWorldSpaceCoords();
 
 			// Draw the found corners on the image.
@@ -49,7 +54,7 @@ void OfflineOpenCV::GetWorldSpaceCoords()
 		}
 	}
 
-	m_imagePoints.push_back(points);
+	m_objectPoints.push_back(points);
 }
 
 void OfflineOpenCV::CalibrateCamera()
@@ -60,13 +65,12 @@ void OfflineOpenCV::CalibrateCamera()
 	cv::Mat img = cv::imread("images/0.jpg");
 
 	// Calibrate the camera, let opencv generate the camera matrix and distortion coefs.
-	cv::calibrateCamera(m_imagePoints, m_objectPoints, img.size(), m_cameraMatrix, distcoefs, rvecs, tvecs);
-	cv::getOptimalNewCameraMatrix(m_cameraMatrix, distcoefs, img.size(), 1, img.size());
+	cv::calibrateCamera(m_objectPoints, m_imagePoints, img.size(), m_cameraMatrix, distcoefs, rvecs, tvecs);
 }
 
 cv::Point2f OfflineOpenCV::GetFirstCorner()
 {
-	return m_objectPoints[imageIndex][0];
+	return m_imagePoints[imageIndex][0];
 }
 
 std::vector<cv::Point2f> OfflineOpenCV::GetAxesPoints()
@@ -77,19 +81,8 @@ std::vector<cv::Point2f> OfflineOpenCV::GetAxesPoints()
 	objectPoints.push_back(cv::Point3f(0, 0, 1));
 
 	std::vector <cv::Point2f> imagePoints;
-	cv::Vec3f l_revc;
-	cv::Vec3f l_tevc;
 
-	try
-	{
-		cv::solvePnPRansac(m_imagePoints[0], m_objectPoints[0], m_cameraMatrix, distcoefs, rvecs[0], tvecs[0]);
-	}
-	catch (cv::Exception e)
-	{
-		std::cout << e.err;
-	}
-
-	cv::projectPoints(objectPoints, rvecs[0], tvecs[0], m_cameraMatrix, distcoefs, imagePoints);
+	cv::projectPoints(objectPoints, rvecs[imageIndex], tvecs[imageIndex], m_cameraMatrix, distcoefs, imagePoints);
 
 
 	return imagePoints;

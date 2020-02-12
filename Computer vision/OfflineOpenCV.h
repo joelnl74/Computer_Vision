@@ -16,8 +16,8 @@ public:
 
 	cv::Point2f GetFirstCorner();
 private:
-	std::vector<std::vector<cv::Point3f>>  m_imagePoints;
-	std::vector<std::vector<cv::Point2f>> m_objectPoints;
+	std::vector<std::vector<cv::Point3f>>  m_objectPoints;
+	std::vector<std::vector<cv::Point2f>> m_imagePoints;
 	
 	cv::Mat m_cameraMatrix;
 	cv::Mat distcoefs;
