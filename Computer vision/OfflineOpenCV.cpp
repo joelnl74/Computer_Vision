@@ -50,7 +50,7 @@ void OfflineOpenCV::GetWorldSpaceCoords()
 	{
 		for (int j = 0; j < boardSize.x; j++)
 		{
-			points.push_back(cv::Point3f(j * SquareSize, i * SquareSize, 0));
+			points.push_back(cv::Point3f(j, i, 0));
 		}
 	}
 
@@ -75,15 +75,27 @@ cv::Point2f OfflineOpenCV::GetFirstCorner()
 
 std::vector<cv::Point2f> OfflineOpenCV::GetAxesPoints()
 {
-	std::vector <cv::Point3f> objectPoints;
-	objectPoints.push_back(cv::Point3f(1, 0, 0));
-	objectPoints.push_back(cv::Point3f(0, 1, 0));
-	objectPoints.push_back(cv::Point3f(0, 0, 1));
+	std::vector <cv::Point3f> axis;
+	axis.push_back(cv::Point3f(3, 0, 0));
+	axis.push_back(cv::Point3f(0, 3, 0));
+	axis.push_back(cv::Point3f(0, 0, -3));
+
+	axis.push_back(cv::Point3f(0, 0, 0));
+	axis.push_back(cv::Point3f(1, 0, 0));
+	axis.push_back(cv::Point3f(0, 1, 0));
+	axis.push_back(cv::Point3f(0, 0, -1));
+
+	axis.push_back(cv::Point3f(1, 1, 0));
+	axis.push_back(cv::Point3f(1, 0, -1));
+	axis.push_back(cv::Point3f(0, 1, -1));
+	axis.push_back(cv::Point3f(1, 1, -1));
 
 	std::vector <cv::Point2f> imagePoints;
+	cv::Mat local_rvecs;
+	cv::Mat local_tvecs;
 
-	cv::projectPoints(objectPoints, rvecs[imageIndex], tvecs[imageIndex], m_cameraMatrix, distcoefs, imagePoints);
-
+	cv::solvePnP(m_objectPoints[imageIndex], m_imagePoints[imageIndex], m_cameraMatrix, distcoefs, local_rvecs, local_tvecs);
+	cv::projectPoints(axis, local_rvecs, local_tvecs, m_cameraMatrix, distcoefs, imagePoints);
 
 	return imagePoints;
 }
