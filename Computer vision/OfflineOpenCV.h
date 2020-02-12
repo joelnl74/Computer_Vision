@@ -11,6 +11,9 @@ public:
 	void GetChessBoardCorners(const std::string& imagePath, const int amount);
 	void GetWorldSpaceCoords();
 	void CalibrateCamera();
+
+	cv::Point2f GetFirstCorner();
+	std::vector<cv::Point3f> ReturnProjecttionPoint();
 private:
 	std::vector<std::vector<cv::Point3f>>  m_imagePoints;
 	std::vector<std::vector<cv::Point2f>> m_objectPoints;

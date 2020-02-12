@@ -62,3 +62,25 @@ void OfflineOpenCV::CalibrateCamera()
 	// Calibrate the camera, let opencv generate the camera matrix and distortion coefs.
 	cv::calibrateCamera(m_imagePoints, m_objectPoints, img.size(), m_cameraMatrix, distcoefs, rvecs, tvecs);
 }
+
+cv::Point2f OfflineOpenCV::GetFirstCorner()
+{
+	return m_objectPoints[0][0];
+}
+
+std::vector<cv::Point3f> OfflineOpenCV::ReturnProjecttionPoint()
+{
+	std::vector<cv::Point3f> points;
+
+	try
+	{
+		cv::projectPoints(m_imagePoints[0], rvecs, tvecs, m_cameraMatrix, distcoefs, m_objectPoints[0], points);
+	}
+	catch (cv::Exception & e)
+	{
+		std::cout << e.err;
+	}
+
+
+	return points;
+}

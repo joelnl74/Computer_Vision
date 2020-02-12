@@ -11,44 +11,22 @@ int main()
 	OfflineOpenCV calibration;
 	calibration.CalibrateCamera();
 
+	cv::Mat image = cv::imread("images/0.jpg");;
+
+	auto corner = calibration.GetFirstCorner();
+	std::vector<cv::Point3f> projectionPoints = calibration.ReturnProjecttionPoint();
+	calibration.ReturnProjecttionPoint();
+
+	//cv::line(image, corner, projectionPoints[0], cv::Scalar(255, 0, 0), 5);
+	//cv::line(image, corner, projectionPoints[1], cv::Scalar(0, 255, 0), 5);
+	//cv::line(image,corner,	projectionPoints[2], cv::Scalar(0, 0, 255), 5);
+
 	// Do the online part for each image/frame
-	//cv::Mat image;
-	//cv::line(image, cv::Point2f(0, 0), cv::Point2f(50, 0), cv::Scalar(255, 0, 0), 5);
-	//cv::line(image, cv::Point2f(0, 0), cv::Point2f(0, 50), cv::Scalar(0, 255, 0), 5);
-	//cv::line(image, cv::Point2f(0, 0), cv::Point2f(50, 50), cv::Scalar(0, 0, 255), 5);
+	//cv::rectangle(image, cv::Rect(0, 0, 50, 50), cv::Scalar(0, 255, 128));
 
-
-	/*
-	int squareSize = 0;
-	cv::Mat image = cv::imread("calib-checkerboard.png");
-	cv::Mat camera_matrix, extrinsives, imagePoints, gridPoints, distortionCoefficients;
-	std::vector<cv::Point3f> boardPoints;
-	cv::FileStorage fs("out_camera_data.xml", cv::FileStorage::READ);
-
-	// Read in camera extrinsives and intrinsics.
-	if (fs.isOpened())
-	{
-		// Read in camera matrix and distortion from output calibrated camera.
-		fs["camera_matrix"] >> camera_matrix;
-		//fs["square_size"] >> squareSize;
-		//fs["image_points"] >> imagePoints;
-		//fs["grid_points"] >> gridPoints;
-		//fs["distortion_coefficients"] >> distortionCoefficients;
-	}
-
-    if (image.empty())                      
-    {
-        std::cout << "Could not open or find the image" << std::endl;
-    }
-	else
-	{	
-		cv::drawChessboardCorners(image, cv::Size2f(9, 7), gridPoints, true);
-
-		cv::rectangle(image, cv::Rect(0, 0, 50, 50), cv::Scalar(0, 255, 128));
-		imshow("Display Window", image);
-	}
+	imshow("Display Window", image);
 
 	cv::waitKey(0);
-	*/
+	
 	return 0;
 }
