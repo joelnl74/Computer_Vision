@@ -4,6 +4,7 @@
 
 static const float SquareSize = 0.025;
 static const cv::Point2i boardSize = cv::Point2i(9 , 6);
+static const int imageIndex = 0;
 
 class OfflineOpenCV
 {

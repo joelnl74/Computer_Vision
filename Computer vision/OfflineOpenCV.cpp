@@ -65,10 +65,10 @@ void OfflineOpenCV::CalibrateCamera()
 
 cv::Point2f OfflineOpenCV::GetFirstCorner()
 {
-	return m_objectPoints[0][0];
+	return m_objectPoints[imageIndex][0];
 }
 
 void OfflineOpenCV::DrawFrameAxes(cv::Mat image)
 {
-	cv::drawFrameAxes(image, m_cameraMatrix, distcoefs, rvecs[0], tvecs[0], 1);
+	cv::drawFrameAxes(image, m_cameraMatrix, distcoefs, rvecs[imageIndex], tvecs[imageIndex], 1);
 }
