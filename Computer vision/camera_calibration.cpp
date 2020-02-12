@@ -246,7 +246,7 @@ enum { DETECTION = 0, CAPTURING = 1, CALIBRATED = 2 };
 bool runCalibrationAndSave(Settings& s, Size imageSize, Mat&  cameraMatrix, Mat& distCoeffs,
                            vector<vector<Point2f> > imagePoints, float grid_width, bool release_object);
 
-int main(int argc, char* argv[])
+int amain(int argc, char* argv[])
 {
     const String keys
         = "{help h usage ? |           | print this message            }"
