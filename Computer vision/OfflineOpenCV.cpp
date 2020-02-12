@@ -20,9 +20,10 @@ void OfflineOpenCV::GetChessBoardCorners(const std::string& imagePath, const int
 		{
 			// Save the points found on the checkerboard.
 			m_objectPoints.push_back(corners);
+			GetWorldSpaceCoords();
 
 			// Draw the found corners on the image.
-			cv::drawChessboardCorners(img, boardSize, corners, succes);
+			cv::drawChessboardCorners(img, boardSize, corners,cv::CALIB_CB_ADAPTIVE_THRESH |cv::CALIB_CB_FILTER_QUADS);
 
 			// Show the image on the scsreen.
 			cv::imshow("img", img);
@@ -36,23 +37,28 @@ void OfflineOpenCV::GetChessBoardCorners(const std::string& imagePath, const int
 
 void OfflineOpenCV::GetWorldSpaceCoords()
 {
+	// Vector of known points in this image.
+	std::vector<cv::Point3f> points;
+
 	// Get the known positions on the images and save those.
-	for (int i = 0; i < boardSize.x; i++)
+	for (int i = 0; i < boardSize.y; i++)
 	{
-		for (int j = 0; j < boardSize.y; j++)
+		for (int j = 0; j < boardSize.x; j++)
 		{
-			std::vector<cv::Point3f> points;
-			points.push_back(cv::Point3f(i * SquareSize, j * SquareSize, 0));
-			m_imagePoints.push_back(points);
+			points.push_back(cv::Point3f(j * SquareSize, i * SquareSize, 0));
 		}
 	}
+
+	m_imagePoints.push_back(points);
 }
 
 void OfflineOpenCV::CalibrateCamera()
 {
 	GetChessBoardCorners("images/", 5);
-	GetWorldSpaceCoords();
 
-	cv::calibrateCamera(m_imagePoints, m_objectPoints, cv::Size(SquareSize, SquareSize), m_cameraMatrix, distcoefs, rvecs, tvecs);
-	//::calib
+	// Needed to get the image size.
+	cv::Mat img = cv::imread("images/0.jpg");
+
+	// Calibrate the camera, let opencv generate the camera matrix and distortion coefs.
+	cv::calibrateCamera(m_imagePoints, m_objectPoints, img.size(), m_cameraMatrix, distcoefs, rvecs, tvecs);
 }
