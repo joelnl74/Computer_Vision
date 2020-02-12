@@ -12,15 +12,12 @@ public:
 	void GetWorldSpaceCoords();
 	void CalibrateCamera();
 private:
-	std::vector<cv::Vec3f>  m_imagePoints;
+	std::vector<std::vector<cv::Point3f>>  m_imagePoints;
 	std::vector<std::vector<cv::Point2f>> m_objectPoints;
-	std::vector<std::vector<cv::Point2f>> m_markerCorners, rejected;
 	
 	cv::Mat m_cameraMatrix;
-	cv::Mat ret;
-	cv::Mat mtx;
-	cv::Mat distcoefs; 
-	cv::Mat rvecs; 
-	cv::Mat tvecs;
+	cv::Mat distcoefs;
+	std::vector<cv::Mat> rvecs;
+	std::vector<cv::Mat> tvecs;
 };
 

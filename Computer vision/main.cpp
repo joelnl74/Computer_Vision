@@ -9,7 +9,7 @@ int main()
 {
 	// Do the offline part of the assingement.
 	OfflineOpenCV calibration;
-	calibration.GetChessBoardCorners("images/", 5);
+	calibration.CalibrateCamera();
 
 	// Do the online part for each image/frame
 	//cv::Mat image;

@@ -41,8 +41,9 @@ void OfflineOpenCV::GetWorldSpaceCoords()
 	{
 		for (int j = 0; j < boardSize.y; j++)
 		{
-			std::vector<cv::Point3f> point;
-			m_imagePoints.push_back(cv::Point3f(i * SquareSize, j * SquareSize, 0));
+			std::vector<cv::Point3f> points;
+			points.push_back(cv::Point3f(i * SquareSize, j * SquareSize, 0));
+			m_imagePoints.push_back(points);
 		}
 	}
 }
@@ -52,5 +53,6 @@ void OfflineOpenCV::CalibrateCamera()
 	GetChessBoardCorners("images/", 5);
 	GetWorldSpaceCoords();
 
-	cv::calibrateCamera(m_imagePoints, m_objectPoints, cv::Point2f(0.025, 0.025), m_cameraMatrix, distcoefs, rvecs, tvecs);
+	cv::calibrateCamera(m_imagePoints, m_objectPoints, cv::Size(SquareSize, SquareSize), m_cameraMatrix, distcoefs, rvecs, tvecs);
+	//::calib
 }
