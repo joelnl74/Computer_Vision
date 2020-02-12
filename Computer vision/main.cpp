@@ -15,16 +15,11 @@ int main()
 	cv::Mat image = cv::imread("images/0.jpg");;
 
 	auto corner = calibration.GetFirstCorner();
-	calibration.DrawFrameAxes(image);
-	cv::rectangle(image, cv::Rect2i(corner.x, corner.y, 50, 50), cv::Scalar(255, 0, 0, 0), 4);
-	//calibration.ReturnProjecttionPoint();
+	auto projectedPoints = calibration.GetAxesPoints();
 
-	//cv::line(image, corner, projectionPoints[0], cv::Scalar(255, 0, 0), 5);
-	//cv::line(image, corner, projectionPoints[1], cv::Scalar(0, 255, 0), 5);
-	//cv::line(image,corner,	projectionPoints[2], cv::Scalar(0, 0, 255), 5);
-
-	// Do the online part for each image/frame
-	//cv::rectangle(image, cv::Rect(0, 0, 50, 50), cv::Scalar(0, 255, 128));
+	cv::line(image, corner, projectedPoints[0], (1, 0, 0), 2);
+	cv::line(image, corner, projectedPoints[1], (0, 1, 0), 2);
+	cv::line(image, corner, projectedPoints[2], (0, 0, 1), 2);
 
 	imshow("Display Window", image);
 

@@ -12,7 +12,7 @@ public:
 	void GetChessBoardCorners(const std::string& imagePath, const int amount);
 	void GetWorldSpaceCoords();
 	void CalibrateCamera();
-	void DrawFrameAxes(cv::Mat image);
+	std::vector<cv::Point2f> GetAxesPoints();
 
 	cv::Point2f GetFirstCorner();
 private:

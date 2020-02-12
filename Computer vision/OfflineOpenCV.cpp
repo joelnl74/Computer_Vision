@@ -61,6 +61,7 @@ void OfflineOpenCV::CalibrateCamera()
 
 	// Calibrate the camera, let opencv generate the camera matrix and distortion coefs.
 	cv::calibrateCamera(m_imagePoints, m_objectPoints, img.size(), m_cameraMatrix, distcoefs, rvecs, tvecs);
+	cv::getOptimalNewCameraMatrix(m_cameraMatrix, distcoefs, img.size(), 1, img.size());
 }
 
 cv::Point2f OfflineOpenCV::GetFirstCorner()
@@ -68,7 +69,28 @@ cv::Point2f OfflineOpenCV::GetFirstCorner()
 	return m_objectPoints[imageIndex][0];
 }
 
-void OfflineOpenCV::DrawFrameAxes(cv::Mat image)
+std::vector<cv::Point2f> OfflineOpenCV::GetAxesPoints()
 {
-	cv::drawFrameAxes(image, m_cameraMatrix, distcoefs, rvecs[imageIndex], tvecs[imageIndex], 1);
+	std::vector <cv::Point3f> objectPoints;
+	objectPoints.push_back(cv::Point3f(1, 0, 0));
+	objectPoints.push_back(cv::Point3f(0, 1, 0));
+	objectPoints.push_back(cv::Point3f(0, 0, 1));
+
+	std::vector <cv::Point2f> imagePoints;
+	cv::Vec3f l_revc;
+	cv::Vec3f l_tevc;
+
+	try
+	{
+		cv::solvePnPRansac(m_imagePoints[0], m_objectPoints[0], m_cameraMatrix, distcoefs, rvecs[0], tvecs[0]);
+	}
+	catch (cv::Exception e)
+	{
+		std::cout << e.err;
+	}
+
+	cv::projectPoints(objectPoints, rvecs[0], tvecs[0], m_cameraMatrix, distcoefs, imagePoints);
+
+
+	return imagePoints;
 }
