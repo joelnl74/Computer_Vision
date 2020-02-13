@@ -119,10 +119,12 @@ cv::Point2f OpenCV1::GetFirstCorner(const int imageIndex)
 std::vector<cv::Point2f> OpenCV1::GetAxesPoints(const int imageIndex)
 {
 	std::vector <cv::Point3f> axis;
+	// projected points needed to draw the axis.
 	axis.push_back(cv::Point3f(3, 0, 0));
 	axis.push_back(cv::Point3f(0, 3, 0));
 	axis.push_back(cv::Point3f(0, 0, -3));
 
+	// projected points needed to draw the cube.
 	axis.push_back(cv::Point3f(0, 0, 0));
 	axis.push_back(cv::Point3f(1, 0, 0));
 	axis.push_back(cv::Point3f(0, 1, 0));
@@ -133,11 +135,15 @@ std::vector<cv::Point2f> OpenCV1::GetAxesPoints(const int imageIndex)
 	axis.push_back(cv::Point3f(0, 1, -1));
 	axis.push_back(cv::Point3f(1, 1, -1));
 
+	// points returned after projecting them
 	std::vector <cv::Point2f> imagePoints;
+
+	// get the image points
 	cv::Mat local_rvecs;
 	cv::Mat local_tvecs;
 
 	cv::solvePnP(m_objectPoints[imageIndex], m_imagePoints[imageIndex], m_cameraMatrix, distcoefs, local_rvecs, local_tvecs);
+	// Get the projectedpoints onto our image so we can draw the axis and cube.
 	cv::projectPoints(axis, local_rvecs, local_tvecs, m_cameraMatrix, distcoefs, imagePoints);
 
 	return imagePoints;
