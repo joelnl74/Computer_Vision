@@ -57,23 +57,66 @@ void OfflineOpenCV::GetWorldSpaceCoords()
 	m_objectPoints.push_back(points);
 }
 
-void OfflineOpenCV::CalibrateCamera()
+void OfflineOpenCV::CalibrateCamera(const int amount, const std::string &imagePath, bool read)
 {
-	GetChessBoardCorners("images/", 12);
+	if (read)
+	{
+		ReadInformationFromFile();
+
+		return;
+	}
+
+	GetChessBoardCorners(imagePath, amount);
 
 	// Needed to get the image size.
 	cv::Mat img = cv::imread("images/0.jpg");
 
 	// Calibrate the camera, let opencv generate the camera matrix and distortion coefs.
 	cv::calibrateCamera(m_objectPoints, m_imagePoints, img.size(), m_cameraMatrix, distcoefs, rvecs, tvecs);
+
+	SaveInformationToFile();
 }
 
-cv::Point2f OfflineOpenCV::GetFirstCorner()
+void OfflineOpenCV::SaveInformationToFile()
+{
+	cv::FileStorage fs;
+
+	fs.open("CalibrationData.xml", cv::FileStorage::WRITE);
+
+	if (fs.isOpened())
+	{
+		fs << "camera_matrix" << m_cameraMatrix;
+		fs << "object_points" << m_objectPoints;
+		fs << "image_points" << m_imagePoints;
+		fs << "rotation_vectors" << rvecs;
+		fs << "translation_vector" << tvecs;
+		fs << "dist_coefs" << distcoefs;
+	}
+}
+
+void OfflineOpenCV::ReadInformationFromFile()
+{
+	cv::FileStorage fs;
+
+	fs.open("CalibrationData.xml", cv::FileStorage::READ);
+
+	if (fs.isOpened())
+	{
+		fs["camera_matrix"] >> m_cameraMatrix;
+		fs["object_points"] >> m_objectPoints;
+		fs["image_points"] >> m_imagePoints;
+		fs["rotation_vectors"] >> rvecs;
+		fs["translation_vector"] >> tvecs;
+		fs["dist_coefs"] >> distcoefs;
+	}
+}
+
+cv::Point2f OfflineOpenCV::GetFirstCorner(const int imageIndex)
 {
 	return m_imagePoints[imageIndex][0];
 }
 
-std::vector<cv::Point2f> OfflineOpenCV::GetAxesPoints()
+std::vector<cv::Point2f> OfflineOpenCV::GetAxesPoints(const int imageIndex)
 {
 	std::vector <cv::Point3f> axis;
 	axis.push_back(cv::Point3f(3, 0, 0));

@@ -4,17 +4,18 @@
 
 static const float SquareSize = 0.025;
 static const cv::Point2i boardSize = cv::Point2i(9 , 6);
-static const int imageIndex = 0;
 
 class OfflineOpenCV
 {
 public:
 	void GetChessBoardCorners(const std::string& imagePath, const int amount);
 	void GetWorldSpaceCoords();
-	void CalibrateCamera();
-	std::vector<cv::Point2f> GetAxesPoints();
+	void CalibrateCamera(const int amount, const std::string& imagePath, bool read);
+	void SaveInformationToFile();
+	void ReadInformationFromFile();
+	std::vector<cv::Point2f> GetAxesPoints(const int imageIndex);
 
-	cv::Point2f GetFirstCorner();
+	cv::Point2f GetFirstCorner(const int imageIndex);
 private:
 	std::vector<std::vector<cv::Point3f>>  m_objectPoints;
 	std::vector<std::vector<cv::Point2f>> m_imagePoints;
