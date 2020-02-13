@@ -5,7 +5,7 @@
 static const float SquareSize = 0.025;
 static const cv::Point2i boardSize = cv::Point2i(9 , 6);
 
-class OfflineOpenCV
+class OpenCV1
 {
 public:
 	void GetChessBoardCorners(const std::string& imagePath, const int amount);

@@ -1,6 +1,6 @@
-#include "OfflineOpenCV.h"
+#include "OpenCV1.h"
 
-void OfflineOpenCV::GetChessBoardCorners(const std::string& imagePath, const int amount)
+void OpenCV1::GetChessBoardCorners(const std::string& imagePath, const int amount)
 {
 	for (int i = 0; i < amount; i++)
 	{
@@ -40,7 +40,7 @@ void OfflineOpenCV::GetChessBoardCorners(const std::string& imagePath, const int
 	}
 }
 
-void OfflineOpenCV::GetWorldSpaceCoords()
+void OpenCV1::GetWorldSpaceCoords()
 {
 	// Vector of known points in this image.
 	std::vector<cv::Point3f> points;
@@ -57,7 +57,7 @@ void OfflineOpenCV::GetWorldSpaceCoords()
 	m_objectPoints.push_back(points);
 }
 
-void OfflineOpenCV::CalibrateCamera(const int amount, const std::string &imagePath, bool read)
+void OpenCV1::CalibrateCamera(const int amount, const std::string &imagePath, bool read)
 {
 	if (read)
 	{
@@ -77,7 +77,7 @@ void OfflineOpenCV::CalibrateCamera(const int amount, const std::string &imagePa
 	SaveInformationToFile();
 }
 
-void OfflineOpenCV::SaveInformationToFile()
+void OpenCV1::SaveInformationToFile()
 {
 	cv::FileStorage fs;
 
@@ -94,7 +94,7 @@ void OfflineOpenCV::SaveInformationToFile()
 	}
 }
 
-void OfflineOpenCV::ReadInformationFromFile()
+void OpenCV1::ReadInformationFromFile()
 {
 	cv::FileStorage fs;
 
@@ -111,12 +111,12 @@ void OfflineOpenCV::ReadInformationFromFile()
 	}
 }
 
-cv::Point2f OfflineOpenCV::GetFirstCorner(const int imageIndex)
+cv::Point2f OpenCV1::GetFirstCorner(const int imageIndex)
 {
 	return m_imagePoints[imageIndex][0];
 }
 
-std::vector<cv::Point2f> OfflineOpenCV::GetAxesPoints(const int imageIndex)
+std::vector<cv::Point2f> OpenCV1::GetAxesPoints(const int imageIndex)
 {
 	std::vector <cv::Point3f> axis;
 	axis.push_back(cv::Point3f(3, 0, 0));

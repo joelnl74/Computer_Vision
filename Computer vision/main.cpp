@@ -1,10 +1,6 @@
 #include<iostream>
-#include "OfflineOpenCV.h";
+#include "OpenCV1.h";
 #include <opencv2/calib3d/calib3d.hpp>
-// https://www.programcreek.com/python/example/89414/cv2.projectPoints
-// https://docs.opencv.org/3.4/d7/d53/tutorial_py_pose.html
-// https://docs.opencv.org/2.4/modules/calib3d/doc/camera_calibration_and_3d_reconstruction.html#decomposeprojectionmatrix
-// https://docs.opencv.org/master/d0/daf/group__projection.html
 
 int main()
 {
@@ -14,8 +10,8 @@ int main()
 	std::string imagesRootFolder = "images/";
 
 	// Do the offline part of the assingement.
-	OfflineOpenCV calibration;
-	calibration.CalibrateCamera(amount, imagesRootFolder, read);
+	OpenCV1 opencv;
+	opencv.CalibrateCamera(amount, imagesRootFolder, read);
 
 	while (currentImage < amount)
 	{
@@ -25,8 +21,8 @@ int main()
 
 		cv::Mat image = cv::imread(currentImageToLoad);
 
-		auto corner = calibration.GetFirstCorner(currentImage);
-		auto projectedPoints = calibration.GetAxesPoints(currentImage);
+		auto corner = opencv.GetFirstCorner(currentImage);
+		auto projectedPoints = opencv.GetAxesPoints(currentImage);
 
 		// BOTTEM.
 		cv::line(image, projectedPoints[3], projectedPoints[4], cv::Scalar(255, 0, 0), 2);
